@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0b6b61">
+<title>UMSFCL နေ့စဉ်အော်ဒါစာရင်း</title>
+<style>
+:root{
+  --bg:#f3f7f6;--card:#fff;--text:#172321;--muted:#6f7f7b;
+  --line:#dce6e3;--brand:#0b6b61;--brand2:#14917f;--soft:#e8f5f2;
+  --danger:#b42318;--ok:#147a52;--shadow:0 12px 32px rgba(23,67,59,.09)
+}
+*{box-sizing:border-box} html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans Myanmar",Arial,sans-serif;
+  color:var(--text);
+  background:radial-gradient(circle at top right,rgba(20,145,127,.11),transparent 34%),
+             linear-gradient(180deg,#fbfdfd 0%,var(--bg) 100%)
+}
+.app{max-width:800px;margin:0 auto;padding:16px 12px calc(30px + env(safe-area-inset-bottom))}
+.hero{
+  background:linear-gradient(135deg,#075f56,#0b766b 55%,#159986);
+  color:#fff;border-radius:24px;padding:20px 18px;
+  box-shadow:0 18px 44px rgba(11,107,97,.20);margin-bottom:13px
+}
+.hero h1{margin:0;font-size:21px;line-height:1.35}
+.hero p{margin:6px 0 0;font-size:13px;line-height:1.55;opacity:.88}
+.card{
+  background:rgba(255,255,255,.97);border:1px solid #e2ebe8;border-radius:18px;
+  padding:15px;margin-bottom:12px;box-shadow:var(--shadow)
+}
+.section-title{margin:0 0 12px;font-size:16px;font-weight:850}
+label{display:block;font-size:13px;font-weight:750;color:#3d514c;margin:0 0 6px}
+input,select,button,textarea{width:100%;font:inherit;font-size:16px;border-radius:12px}
+input,select,textarea{
+  border:1.5px solid var(--line);padding:11px 12px;background:#fff;min-height:48px;color:var(--text)
+}
+input:focus,select:focus,textarea:focus{
+  outline:none;border-color:var(--brand2);box-shadow:0 0 0 4px rgba(20,145,127,.10)
+}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.customer-card{
+  border:1px solid #e3ece9;background:#fbfdfc;border-radius:16px;
+  padding:12px;margin-bottom:10px;transition:.18s ease
+}
+.customer-card.completed{background:#f7fbfa;border-color:#cae4de}
+.customer-card.collapsed .customer-body{display:none}
+.customer-summary{display:none;font-size:12px;color:#47615b;margin-top:4px;line-height:1.5}
+.customer-card.collapsed .customer-summary{display:block}
+.customer-toggle{
+  width:auto;min-height:38px;padding:8px 10px;background:#eef6f4;color:#0b6b61;
+  font-size:12px;border-radius:10px;box-shadow:none
+}
+.customer-actions{display:flex;gap:6px;align-items:center}
+.save-customer{margin-top:10px}
+.remember-note{font-size:11px;color:var(--muted);margin-top:6px}
+.metric-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.metric-mini{background:#f4f8f7;border:1px solid #e2ebe8;border-radius:12px;padding:9px;text-align:center}
+.metric-mini b{display:block;font-size:16px}.metric-mini span{font-size:10px;color:var(--muted)}
+.product-compact{display:grid;grid-template-columns:1.3fr .55fr .55fr;gap:7px;margin-top:8px}
+.product-compact .field-mini label{font-size:11px;margin-bottom:4px}
+.product-compact input,.product-compact select{min-height:42px;font-size:14px;padding:8px 9px}
+
+.customer-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+.customer-title{font-weight:850;font-size:14px}
+.remove-customer{
+  width:auto;min-width:42px;min-height:40px;padding:8px 12px;border:0;
+  background:#fff0ef;color:#a52b22
+}
+.product-card{
+  border:1px solid #e2ebe8;background:#fff;border-radius:14px;padding:10px;margin-top:9px
+}
+.product-top{
+  display:grid;grid-template-columns:minmax(0,1.4fr) minmax(84px,.55fr) 42px;
+  gap:7px;align-items:center
+}
+.product-top select,.product-top input{min-height:44px}
+.product-top input{text-align:right;font-weight:750}
+.remove-product{min-height:44px;border:0;background:#fff0ef;color:#a52b22;font-size:20px;padding:8px}
+.term-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}
+.term-extra{display:none;margin-top:8px}
+.term-extra.show{display:block}
+button{border:0;min-height:48px;padding:12px 14px;font-weight:850;cursor:pointer}
+.primary{color:#fff;background:linear-gradient(135deg,var(--brand),var(--brand2));box-shadow:0 9px 18px rgba(11,107,97,.18)}
+.soft{background:var(--soft);color:var(--brand)} .ghost{background:#eef2f1;color:#31423e}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}
+.add-btn{margin-top:9px}
+.small{font-size:12px;color:var(--muted);line-height:1.5;margin:8px 1px 0}
+.badge{
+  display:inline-flex;padding:5px 8px;border-radius:999px;background:var(--soft);
+  color:var(--brand);font-size:11px;font-weight:800
+}
+.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.metric{background:#f4f8f7;border:1px solid #e2ebe8;border-radius:13px;padding:10px;text-align:center}
+.metric b{display:block;font-size:18px}.metric span{font-size:11px;color:var(--muted)}
+textarea{min-height:120px;resize:vertical;line-height:1.65;background:#fbfdfd}
+.report-area{min-height:300px}
+.status{font-size:12px;min-height:18px;margin-top:8px}
+.status.ok{color:var(--ok)} .status.bad{color:var(--danger)}
+.inline-note{font-size:12px;color:var(--muted);margin-top:6px}
+.sticky{
+  position:sticky;bottom:0;z-index:4;padding:8px 0 calc(9px + env(safe-area-inset-bottom));
+  background:linear-gradient(to top,var(--bg) 68%,rgba(243,247,246,0))
+}
+.money-wrap{position:relative}
+.money-wrap input{padding-right:50px;font-weight:780}
+.currency{
+  position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  color:#8a9894;font-size:12px;font-weight:800;pointer-events:none
+}
+@media(max-width:620px){
+  .app{padding-left:10px;padding-right:10px}
+  .hero{border-radius:20px;padding:18px 15px}.hero h1{font-size:19px}
+  .card{padding:13px;border-radius:16px}.grid2,.actions,.term-grid{grid-template-columns:1fr}
+  .summary-grid{grid-template-columns:1fr 1fr 1fr}
+  .product-top{grid-template-columns:minmax(0,1fr) 82px 40px;gap:6px}
+  .product-top select,.product-top input{font-size:14px;padding:9px}
+}
+</style>
+</head>
+<body>
+<main class="app">
+<datalist id="productList">
+  <option value="Azirik-500"></option>
+  <option value="Canzel-150"></option>
+  <option value="Esclot Cream"></option>
+  <option value="Esformet-500"></option>
+  <option value="Panrik-40"></option>
+  <option value="Panrik-DM"></option>
+  <option value="Petrik-400"></option>
+  <option value="Setrik-10"></option>
+  <option value="Cefrik-500"></option>
+  <option value="Escal D3"></option>
+  <option value="Esformet-1000"></option>
+  <option value="Glice-M"></option>
+  <option value="Mefrik Spas"></option>
+  <option value="Other"></option>
+</datalist>
+
+<section class="hero">
+  <h1>UMSFCL နေ့စဉ်အော်ဒါစာရင်း</h1>
+  <p>ဆိုင်တစ်ဆိုင်ချင်းစီ၏ CD အရောင်းငွေ / Cash Down Amount၊ Credit အရောင်းငွေ / Credit Amountနှင့် ဆေးတစ်မျိုးချင်းစီ၏ အရောင်းစည်းကမ်းကို ဖြည့်သွင်းပြီး Viber အော်ဒါစာရင်းနှင့် နေ့စဉ်အရောင်းအကျဉ်းချုပ် ထုတ်နိုင်ပါသည်။</p>
+</section>
+
+<section class="card">
+  <h2 class="section-title">နေ့စဉ်အချက်အလက်</h2>
+  <div class="grid2">
+    <div><label for="date">ရက်စွဲ</label><input id="date" type="date"></div>
+    <div><label for="msrName">MSR အမည် / MSR Name</label><input id="msrName" type="text" placeholder="ဥပမာ - Aung Aung"></div>
+    <div><label for="defaultTownship">နေ့အတွက် မြို့နယ်/ဧရိယာ (မဖြည့်လည်းရ)</label><input id="defaultTownship" type="text" placeholder="ဥပမာ - ဒလ"></div>
+  </div>
+  <div class="remember-note">MSR အမည်နှင့် နောက်ဆုံးအသုံးပြုခဲ့သော ဧရိယာကို ဒီဖုန်းမှာ အလိုအလျောက် မှတ်ထားပေးပါမည်။</div>
+</section>
+
+<section class="card">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px">
+    <h2 class="section-title" style="margin:0">ဆိုင်အော်ဒါများ</h2>
+    <span class="badge" id="customerCountBadge">ဆိုင် 0 ဆိုင်</span>
+  </div>
+
+  <div id="customers"></div>
+
+  <button id="addCustomer" type="button" class="soft add-btn">＋ ဆိုင်ထည့်ရန်</button>
+  <p class="small">ဆေးတစ်မျိုးချင်းစီတွင် CD / Credit / Net Price ကိုရွေးနိုင်ပြီး FOC ရှိပါက FOC အရေအတွက်ကို သီးသန့်ထည့်နိုင်ပါသည်။</p>
+</section>
+
+<section class="card">
+  <h2 class="section-title">နေ့စဉ် Summary အတွက်</h2>
+  <div class="grid2">
+    <div>
+      <label for="visited">သွားရောက်ခဲ့သောဆိုင်</label>
+      <input id="visited" type="number" min="0" inputmode="numeric" placeholder="18">
+    </div>
+    <div>
+      <label>အော်ဒါရရှိသောဆိုင်</label>
+      <input id="orderedAuto" type="text" readonly value="0">
+    </div>
+  </div>
+  <div class="inline-note" id="notOrderedText">အော်ဒါမရရှိသောဆိုင် - 0 ဆိုင်</div>
+</section>
+
+<div class="sticky"><button id="generateAll" type="button" class="primary">စာရင်းထုတ်ရန်</button></div>
+
+<section class="card">
+  <div class="summary-grid">
+    <div class="metric"><b id="mCustomers">0</b><span>အော်ဒါရဆိုင်</span></div>
+    <div class="metric"><b id="mProducts">0</b><span>ဆေးအရောင်း</span></div>
+    <div class="metric"><b id="mTotal">0</b><span>Total အရောင်း</span></div>
+  </div>
+  <div class="metric-row">
+    <div class="metric-mini"><b id="mConversion">0%</b><span>Conversion</span></div>
+    <div class="metric-mini"><b id="mCreditRatio">0%</b><span>Credit %</span></div>
+    <div class="metric-mini"><b id="mFocRatio">0%</b><span>FOC Ratio</span></div>
+  </div>
+
+  <label for="orderReport">Viber သို့ပို့မည့် ဆိုင်အော်ဒါစာရင်း</label>
+  <textarea id="orderReport" class="report-area" readonly placeholder="စာရင်းထုတ်ပြီးပါက ဆိုင်တစ်ဆိုင်ချင်းစီ၏ အော်ဒါစာရင်း ဒီနေရာတွင် ပေါ်လာပါမည်။"></textarea>
+
+  <div class="actions">
+    <button id="copyOrders" type="button" class="primary">📋 ဆိုင်အော်ဒါစာရင်း Copy</button>
+    <button id="copySummary" type="button" class="soft">📋 နေ့စဉ် Summary Copy</button>
+  </div>
+
+  <label for="dailySummary" style="margin-top:12px">နေ့စဉ်အရောင်းအကျဉ်းချုပ်</label>
+  <textarea id="dailySummary" class="report-area" readonly placeholder="နေ့စဉ် summary ဒီမှာပေါ်လာပါမယ်။"></textarea>
+
+  <button id="resetAll" type="button" class="ghost" style="margin-top:10px">အသစ်ပြန်ဖြည့်ရန်</button>
+  <div id="status" class="status"></div>
+</section>
+
+</main>
+
+<script>
+const PRODUCTS = ["Azirik-500", "Canzel-150", "Esclot Cream", "Esformet-500", "Panrik-40", "Panrik-DM", "Petrik-400", "Setrik-10", "Cefrik-500", "Escal D3", "Esformet-1000", "Glice-M", "Mefrik Spas", "Other"];
+const $ = id => document.getElementById(id);
+
+function todayISO(){
+  const d = new Date();
+  const local = new Date(d.getTime() - d.getTimezoneOffset()*60000);
+  return local.toISOString().slice(0,10);
+}
+function displayDate(iso){
+  if(!iso) return "";
+  const [y,m,d] = iso.split("-");
+  return `${Number(d)}.${Number(m)}.${y}`;
+}
+function digitsOnly(v){ return String(v||"").replace(/[^0-9]/g,""); }
+function num(v){ const d=digitsOnly(v); return d ? Number(d) : 0; }
+function fmt(v){ return Number(v||0).toLocaleString("en-US"); }
+
+function attachMoneyFormatter(input){
+  input.addEventListener("input",()=>{
+    const raw=digitsOnly(input.value);
+    input.value = raw ? Number(raw).toLocaleString("en-US") : "";
+    updateCounters();
+  });
+}
+
+function productSelect(selected=""){
+  const input=document.createElement("input");
+  input.className="product-name";
+  input.setAttribute("list","productList");
+  input.placeholder="ဆေးအမည် ရိုက်ရှာပါ";
+  input.value=selected || PRODUCTS[0];
+  return input;
+}
+
+function addProductCard(container, selected="", qty=""){
+  const card=document.createElement("div");
+  card.className="product-card";
+
+  const top=document.createElement("div");
+  top.className="product-top";
+
+  const select=productSelect(selected||PRODUCTS[0]);
+
+  const qtyInput=document.createElement("input");
+  qtyInput.type="number";qtyInput.min="0";qtyInput.inputMode="numeric";
+  qtyInput.placeholder="Qty";qtyInput.className="product-qty";qtyInput.value=qty;
+
+  const remove=document.createElement("button");
+  remove.type="button";remove.className="remove-product";remove.textContent="×";
+  remove.addEventListener("click",()=>{card.remove();updateCounters();});
+
+  top.append(select,qtyInput,remove);
+
+  const termGrid=document.createElement("div");
+  termGrid.className="term-grid";
+
+  const termWrap=document.createElement("div");
+  termWrap.innerHTML="<label>အရောင်းစည်းကမ်း</label>";
+  const term=document.createElement("select");
+  term.className="sale-term";
+  [
+    ["CD","CD %"],
+    ["Credit","Credit"],
+    ["Net","Net Price"]
+  ].forEach(([v,t])=>{
+    const o=document.createElement("option");
+    o.value=v;o.textContent=t;
+    term.appendChild(o);
+  });
+  termWrap.appendChild(term);
+
+  const extraHolder=document.createElement("div");
+  extraHolder.className="term-extra";
+
+  const extraLabel=document.createElement("label");
+  const extraInput=document.createElement("input");
+  extraInput.className="term-value";
+
+  extraHolder.append(extraLabel,extraInput);
+  termGrid.append(termWrap,extraHolder);
+
+  const focWrap=document.createElement("div");
+  focWrap.style.marginTop="8px";
+  focWrap.innerHTML="<label>FOC Qty (မရှိလျှင် အလွတ်)</label>";
+
+  const focInput=document.createElement("input");
+  focInput.className="foc-qty";
+  focInput.type="number";
+  focInput.min="0";
+  focInput.step="1";
+  focInput.inputMode="numeric";
+  focInput.placeholder="ဥပမာ - 2";
+  focWrap.appendChild(focInput);
+
+  function refreshTerm(){
+    extraInput.value="";
+    extraHolder.classList.remove("show");
+
+    if(term.value==="CD"){
+      extraLabel.textContent="CD ရာခိုင်နှုန်း / Cash Down Discount %";
+      extraInput.type="number";
+      extraInput.min="0";
+      extraInput.step="0.1";
+      extraInput.inputMode="decimal";
+      extraInput.placeholder="ဥပမာ - 2";
+      extraInput.value = extraInput.value || "2";
+      extraHolder.classList.add("show");
+    } else if(term.value==="Credit"){
+      extraLabel.textContent="အကြွေးကာလ / Credit Period (Months)";
+      extraInput.type="number";
+      extraInput.min="0";
+      extraInput.step="1";
+      extraInput.inputMode="numeric";
+      extraInput.placeholder="ဥပမာ - 1";
+      extraHolder.classList.add("show");
+    } else if(term.value==="Net"){
+      extraLabel.textContent="Net Price";
+      extraInput.type="text";
+      extraInput.inputMode="numeric";
+      extraInput.placeholder="ဥပမာ - 3,490";
+      extraHolder.classList.add("show");
+    }
+  }
+
+  term.addEventListener("change",refreshTerm);
+  extraInput.addEventListener("input",()=>{
+    if(term.value==="Net"){
+      const raw=digitsOnly(extraInput.value);
+      extraInput.value = raw ? Number(raw).toLocaleString("en-US") : "";
+    }
+  });
+
+  card.append(top,termGrid,focWrap);
+  container.appendChild(card);
+  refreshTerm();
+}
+
+function addCustomer(){
+  const card=document.createElement("div");
+  card.className="customer-card";
+
+  const head=document.createElement("div");
+  head.className="customer-head";
+
+  const title=document.createElement("div");
+  title.className="customer-title";
+  title.textContent="ဆိုင်";
+
+  const actions=document.createElement("div");
+  actions.className="customer-actions";
+
+  const toggle=document.createElement("button");
+  toggle.type="button"; toggle.className="customer-toggle"; toggle.textContent="ချုံ့ရန်";
+  toggle.addEventListener("click",()=>{
+    card.classList.toggle("collapsed");
+    toggle.textContent = card.classList.contains("collapsed") ? "ပြင်ရန်" : "ချုံ့ရန်";
+  });
+
+  const remove=document.createElement("button");
+  remove.type="button";remove.className="remove-customer";remove.textContent="ဖျက်ရန်";
+  remove.addEventListener("click",()=>{
+    card.remove();renumberCustomers();updateCounters();
+  });
+
+  actions.append(toggle,remove);
+  head.append(title,actions);
+
+  const summary=document.createElement("div");
+  summary.className="customer-summary";
+
+  const body=document.createElement("div");
+  body.className="customer-body";
+
+  const nameArea=document.createElement("div");
+  nameArea.className="grid2";
+
+  const nameWrap=document.createElement("div");
+  nameWrap.innerHTML="<label>ဆိုင်အမည်</label>";
+  const name=document.createElement("input");
+  name.className="customer-name";
+  name.placeholder="ဥပမာ - ပုလဲသွယ်ဆေးဆိုင်";
+  nameWrap.appendChild(name);
+
+  const areaWrap=document.createElement("div");
+  areaWrap.innerHTML="<label>မြို့နယ် / ဧရိယာ</label>";
+  const area=document.createElement("input");
+  area.className="customer-area";
+  area.placeholder="ဥပမာ - ထောက်ကြန့် / DALA";
+  area.value=$("defaultTownship").value.trim();
+  areaWrap.appendChild(area);
+
+  nameArea.append(nameWrap,areaWrap);
+
+  const amountWrap=document.createElement("div");
+  amountWrap.style.marginTop="9px";
+
+  const amountsGrid=document.createElement("div");
+  amountsGrid.className="grid2";
+
+  const cdWrap=document.createElement("div");
+  cdWrap.innerHTML="<label>CD အရောင်းငွေ / Cash Down Amount</label>";
+  const cdShell=document.createElement("div");
+  cdShell.className="money-wrap";
+  const cdAmount=document.createElement("input");
+  cdAmount.type="text";
+  cdAmount.inputMode="numeric";
+  cdAmount.placeholder="ဥပမာ - 500,000";
+  cdAmount.className="customer-cd-amount";
+  const cdCur=document.createElement("span");
+  cdCur.className="currency";
+  cdCur.textContent="ကျပ်";
+  cdShell.append(cdAmount,cdCur);
+  cdWrap.appendChild(cdShell);
+
+  const crWrap=document.createElement("div");
+  crWrap.innerHTML="<label>Credit အရောင်းငွေ / Credit Amount</label>";
+  const crShell=document.createElement("div");
+  crShell.className="money-wrap";
+  const crAmount=document.createElement("input");
+  crAmount.type="text";
+  crAmount.inputMode="numeric";
+  crAmount.placeholder="ဥပမာ - 350,000";
+  crAmount.className="customer-credit-amount";
+  const crCur=document.createElement("span");
+  crCur.className="currency";
+  crCur.textContent="ကျပ်";
+  crShell.append(crAmount,crCur);
+  crWrap.appendChild(crShell);
+
+  const totalWrap=document.createElement("div");
+  totalWrap.style.marginTop="9px";
+  totalWrap.innerHTML="<label>Total အရောင်းငွေ / Total Amount</label>";
+  const totalShell=document.createElement("div");
+  totalShell.className="money-wrap";
+  const amount=document.createElement("input");
+  amount.type="text";
+  amount.readOnly=true;
+  amount.className="customer-amount";
+  amount.value="0";
+  const cur=document.createElement("span");
+  cur.className="currency";
+  cur.textContent="ကျပ်";
+  totalShell.append(amount,cur);
+  totalWrap.appendChild(totalShell);
+
+  amountsGrid.append(cdWrap,crWrap);
+  amountWrap.append(amountsGrid,totalWrap);
+
+  function recalcCustomerTotal(){
+    const total = num(cdAmount.value) + num(crAmount.value);
+    amount.value = fmt(total);
+    updateCounters();
+  }
+
+  attachMoneyFormatter(cdAmount);
+  attachMoneyFormatter(crAmount);
+  cdAmount.addEventListener("input",recalcCustomerTotal);
+  crAmount.addEventListener("input",recalcCustomerTotal);
+
+  const prodLabel=document.createElement("label");
+  prodLabel.style.marginTop="10px";
+  prodLabel.textContent="ဆေးအမျိုးအစား";
+
+  const prodContainer=document.createElement("div");
+  prodContainer.className="products";
+  addProductCard(prodContainer,PRODUCTS[0],"");
+
+  const addProd=document.createElement("button");
+  addProd.type="button";
+  addProd.className="soft";
+  addProd.style.marginTop="8px";
+  addProd.textContent="＋ ဆေးထည့်ရန်";
+  addProd.addEventListener("click",()=>{
+    addProductCard(prodContainer,PRODUCTS[0],"");
+    updateCounters();
+  });
+
+  const notesWrap=document.createElement("div");
+  notesWrap.style.marginTop="10px";
+  notesWrap.innerHTML="<label>မှတ်ချက် (မဖြည့်လည်းရ)</label>";
+
+  const notes=document.createElement("textarea");
+  notes.className="customer-notes";
+  notes.placeholder="အခြားမှတ်ချက်";
+  notesWrap.appendChild(notes);
+
+  const saveBtn=document.createElement("button");
+  saveBtn.type="button";
+  saveBtn.className="soft save-customer";
+  saveBtn.textContent="✓ ဆိုင်ပြီးပြီ / Done";
+  saveBtn.addEventListener("click",()=>{
+    const cname=name.value.trim() || "ဆိုင်အမည်မရှိ";
+    const areaText=area.value.trim() || $("defaultTownship").value.trim();
+    const total=num(amount.value);
+    const productCount=[...prodContainer.querySelectorAll(".product-card")]
+      .filter(pc=>Number(pc.querySelector(".product-qty").value||0)>0).length;
+    summary.textContent=`${cname}${areaText ? " ("+areaText+")":""} • ${productCount} Products • ${fmt(total)} ကျပ် ✓`;
+    card.classList.add("completed","collapsed");
+    toggle.textContent="ပြင်ရန်";
+  });
+
+  body.append(nameArea,amountWrap,prodLabel,prodContainer,addProd,notesWrap,saveBtn);
+  card.append(head,summary,body);
+  $("customers").appendChild(card);
+
+  renumberCustomers();
+  updateCounters();
+}
+
+function renumberCustomers(){
+  document.querySelectorAll(".customer-card").forEach((card,i)=>{
+    card.querySelector(".customer-title").textContent=`ဆိုင် ${i+1}`;
+  });
+}
+
+function updateCounters(){
+  const customers=[...document.querySelectorAll(".customer-card")];
+  const count=customers.length;
+  $("customerCountBadge").textContent=`ဆိုင် ${count} ဆိုင်`;
+  $("orderedAuto").value=count;
+
+  const visited=Number($("visited").value||0);
+  $("notOrderedText").textContent=`အော်ဒါမရရှိသောဆိုင် - ${Math.max(visited-count,0)} ဆိုင်`;
+
+  let productLines=0,totalSales=0,totalCredit=0,soldQty=0,focQty=0;
+  document.querySelectorAll(".product-card").forEach(pc=>{
+    const q=Number(pc.querySelector(".product-qty").value||0);
+    const fq=Number(pc.querySelector(".foc-qty").value||0);
+    if(q>0){productLines++;soldQty+=q;}
+    if(fq>0)focQty+=fq;
+  });
+  document.querySelectorAll(".customer-amount").forEach(i=>{
+    totalSales += num(i.value);
+  });
+  document.querySelectorAll(".customer-credit-amount").forEach(i=>{
+    totalCredit += num(i.value);
+  });
+
+  $("mCustomers").textContent=count;
+  $("mProducts").textContent=productLines;
+  $("mTotal").textContent=fmt(totalSales);
+
+  const conversion = visited>0 ? (count/visited)*100 : 0;
+  const creditRatio = totalSales>0 ? (totalCredit/totalSales)*100 : 0;
+  const focRatio = soldQty>0 ? (focQty/soldQty)*100 : 0;
+
+  $("mConversion").textContent=`${conversion.toFixed(1)}%`;
+  $("mCreditRatio").textContent=`${creditRatio.toFixed(1)}%`;
+  $("mFocRatio").textContent=`${focRatio.toFixed(1)}%`;
+}
+
+function getCustomerData(){
+  return [...document.querySelectorAll(".customer-card")].map(card=>{
+    const name=card.querySelector(".customer-name").value.trim();
+    const area=card.querySelector(".customer-area").value.trim();
+    const cdAmount=num(card.querySelector(".customer-cd-amount").value);
+    const creditAmount=num(card.querySelector(".customer-credit-amount").value);
+    const amount=cdAmount + creditAmount;
+    const notes=card.querySelector(".customer-notes").value.trim();
+
+    const products=[...card.querySelectorAll(".product-card")].map(pc=>{
+      const name=pc.querySelector(".product-name").value;
+      const qty=Number(pc.querySelector(".product-qty").value||0);
+      const term=pc.querySelector(".sale-term").value;
+      const value=pc.querySelector(".term-value").value.trim();
+      const focQty=Number(pc.querySelector(".foc-qty").value||0);
+      return {name,qty,term,value,focQty};
+    }).filter(p=>p.qty>0);
+
+    return {name,area,cdAmount,creditAmount,amount,notes,products};
+  });
+}
+
+function productLine(p){
+  let base = `${p.name} - ${p.qty} box${p.qty===1?"":"es"}`;
+
+  let termText = "";
+  if(p.term==="CD"){
+    termText = `CD-${p.value || 2}%`;
+  } else if(p.term==="Credit"){
+    termText = p.value
+      ? `Credit ${p.value} month${Number(p.value)===1?"":"s"}`
+      : "Credit";
+  } else if(p.term==="Net"){
+    termText = p.value ? `net-${p.value}/-` : "Net Price";
+  }
+
+  if(p.focQty > 0){
+    base += ` + ${p.focQty} box${p.focQty===1?"":"es"} FOC`;
+  }
+
+  return termText ? `${base} (${termText})` : base;
+}
+
+function generateReports(){
+  const customers=getCustomerData();
+  const defaultTownship=$("defaultTownship").value.trim();
+
+  if(customers.length===0){
+    alert("ဆိုင်အနည်းဆုံး ၁ ဆိုင် ထည့်ပါ။");
+    return;
+  }
+
+  for(const c of customers){
+    if(!c.name){
+      alert("ဆိုင်အမည်အားလုံး ဖြည့်ပါ။");
+      return;
+    }
+    if(c.products.length===0){
+      alert(`${c.name} အတွက် ဆေးအရေအတွက် ဖြည့်ပါ။`);
+      return;
+    }
+    if(c.amount<=0){
+      alert(`${c.name} အတွက် CD အရောင်းငွေ / Cash Down Amount သို့မဟုတ် Credit အရောင်းငွေ / Credit Amount ဖြည့်ပါ။`);
+      return;
+    }
+  }
+
+  const orderBlocks=customers.map(c=>{
+    const area=c.area || defaultTownship;
+    const lines=[area ? `${c.name}(${area})` : c.name];
+
+    c.products.forEach(p=>lines.push(productLine(p)));
+    if(c.cdAmount > 0) lines.push(`CD အရောင်းငွေ - ${fmt(c.cdAmount)} ကျပ်`);
+    if(c.creditAmount > 0) lines.push(`Credit အရောင်းငွေ - ${fmt(c.creditAmount)} ကျပ်`);
+    if(c.cdAmount > 0 && c.creditAmount > 0) {
+      lines.push(`Total အရောင်းငွေ - ${fmt(c.amount)} ကျပ်`);
+    }
+
+    if(c.notes) lines.push(`မှတ်ချက် - ${c.notes}`);
+
+    return lines.join("\n");
+  });
+
+  $("orderReport").value=orderBlocks.join("\n\n");
+
+  const totals={};
+  const focTotals={};
+  customers.forEach(c=>{
+    c.products.forEach(p=>{
+      totals[p.name]=(totals[p.name]||0)+p.qty;
+      if(p.focQty > 0){
+        focTotals[p.name]=(focTotals[p.name]||0)+p.focQty;
+      }
+    });
+  });
+
+  const visited=Number($("visited").value||0);
+  const ordered=customers.length;
+  const notOrdered=Math.max(visited-ordered,0);
+  const totalSales=customers.reduce((sum,c)=>sum+c.amount,0);
+  const totalCdSales=customers.reduce((sum,c)=>sum+c.cdAmount,0);
+  const totalCreditSales=customers.reduce((sum,c)=>sum+c.creditAmount,0);
+
+  const s=[];
+  s.push(`📋 နေ့စဉ်အရောင်းအကျဉ်းချုပ် — ${displayDate($("date").value)}`);
+  if($("msrName").value.trim()) s.push(`MSR - ${$("msrName").value.trim()}`);
+  s.push("");
+  if(defaultTownship) s.push(`မြို့နယ် / ဧရိယာ - ${defaultTownship}`);
+  s.push(`သွားရောက်ခဲ့သောဆိုင် - ${visited} ဆိုင်`);
+  s.push(`အော်ဒါရရှိသောဆိုင် - ${ordered} ဆိုင်`);
+  s.push(`အော်ဒါမရရှိသောဆိုင် - ${notOrdered} ဆိုင်`);
+  s.push("");
+  s.push("အရောင်း");
+  Object.entries(totals).forEach(([name,qty])=>{
+    s.push(`${name} - ${qty} ဘူး`);
+  });
+
+  if(Object.keys(focTotals).length){
+    s.push("");
+    s.push("FOC");
+    Object.entries(focTotals).forEach(([name,qty])=>{
+      s.push(`${name} - ${qty} ဘူး`);
+    });
+  }
+
+  s.push("");
+  s.push(`CD အရောင်း - ${fmt(totalCdSales)} ကျပ်`);
+  s.push(`Credit အရောင်း - ${fmt(totalCreditSales)} ကျပ်`);
+  s.push(`Total အရောင်း - ${fmt(totalSales)} ကျပ်`);
+
+  $("dailySummary").value=s.join("\n");
+  updateCounters();
+  $("orderReport").scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+async function copyText(id,successText){
+  const text=$(id).value;
+  if(!text){
+    $("status").textContent="ပထမဆုံး စာရင်းထုတ်ပါ။";
+    $("status").className="status bad";
+    return;
+  }
+  try{
+    await navigator.clipboard.writeText(text);
+  }catch(e){
+    $(id).focus();$(id).select();document.execCommand("copy");
+  }
+  $("status").textContent=successText;
+  $("status").className="status ok";
+}
+
+function resetAll(){
+  function loadRemembered(){
+  $("msrName").value = localStorage.getItem("umsfcl_msr_name") || "";
+  $("defaultTownship").value = localStorage.getItem("umsfcl_last_area") || "";
+}
+function rememberTopFields(){
+  localStorage.setItem("umsfcl_msr_name", $("msrName").value.trim());
+  localStorage.setItem("umsfcl_last_area", $("defaultTownship").value.trim());
+}
+
+$("date").value=todayISO();
+  $("msrName").value=localStorage.getItem("umsfcl_msr_name") || "";
+  $("defaultTownship").value=localStorage.getItem("umsfcl_last_area") || "";
+  $("visited").value="";
+  $("customers").innerHTML="";
+  $("orderReport").value="";
+  $("dailySummary").value="";
+  $("status").textContent="";
+  addCustomer();
+  updateCounters();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function loadRemembered(){
+  $("msrName").value = localStorage.getItem("umsfcl_msr_name") || "";
+  $("defaultTownship").value = localStorage.getItem("umsfcl_last_area") || "";
+}
+function rememberTopFields(){
+  localStorage.setItem("umsfcl_msr_name", $("msrName").value.trim());
+  localStorage.setItem("umsfcl_last_area", $("defaultTownship").value.trim());
+}
+
+$("date").value=todayISO();
+loadRemembered();
+$("msrName").addEventListener("input",rememberTopFields);
+$("defaultTownship").addEventListener("input",rememberTopFields);
+$("addCustomer").addEventListener("click",()=>addCustomer());
+$("generateAll").addEventListener("click",generateReports);
+$("copyOrders").addEventListener("click",()=>copyText("orderReport","ဆိုင်အော်ဒါစာရင်း Copy လုပ်ပြီးပါပြီ ✓"));
+$("copySummary").addEventListener("click",()=>copyText("dailySummary","နေ့စဉ် Summary Copy လုပ်ပြီးပါပြီ ✓"));
+$("resetAll").addEventListener("click",resetAll);
+$("visited").addEventListener("input",updateCounters);
+$("customers").addEventListener("input",updateCounters);
+
+addCustomer();
+updateCounters();
+</script>
+</body>
+</html>
